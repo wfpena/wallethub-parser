@@ -15,13 +15,15 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import com.ef.dtos.LogDTO;
 import com.ef.models.BlockedIps;
 import com.ef.models.Log;
-import com.ef.models.LogDTO;
 import com.ef.utils.CliParser;
 import com.ef.utils.ParsingCliException;
 
-
+/*
+ * @author Wilson Pena
+ */
 public class Parser 
 {
 	public static Integer i = 0;
@@ -41,7 +43,7 @@ public class Parser
     		HashMap<String, Object> argMap = cli.getArguments();
     		
     		String fileName = argMap.get("accesslog").toString();
-    		print("Inserting new values...");
+    		print("Inserting new values...\n");
     		Stream<String> stream = Files.lines(Paths.get(fileName));
 			stream
 				.filter(line -> line != null && !Objects.equals(line, ""))
@@ -88,6 +90,10 @@ public class Parser
 				session.getTransaction().commit();
     		});
     		
+    		if(ips.size() == 0){
+    			print("No results found.");
+    		}
+    		
     		if(session.isConnected()){
     			try{
     				session.close();
@@ -96,8 +102,9 @@ public class Parser
     			}
     		}
 		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
+			print("Error: " + e.getMessage());
 		}
+    	print("\nEnd of process.");
     	System.exit(0);
     }
     
@@ -128,6 +135,12 @@ public class Parser
     	}
     }
     
+    
+    /*
+     * Function create for testing
+     * it doesn't add the values to the database
+     * only reads them.
+     */
     public void funcForTesting( String[] args )
 	{
 		java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);

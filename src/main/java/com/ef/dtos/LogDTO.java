@@ -1,4 +1,4 @@
-package com.ef.models;
+package com.ef.dtos;
 
 import java.util.Date;
 

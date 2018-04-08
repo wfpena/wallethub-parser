@@ -17,7 +17,7 @@
 <!--       <property name="hibernate.hbm2ddl.auto">update</property> -->
        
       <mapping class="com.ef.models.Log"/>
-      <mapping class="com.ef.models.LogDTO" />
+      <mapping class="com.ef.dtos.LogDTO" />
       <mapping class="com.ef.models.BlockedIps" />  
    </session-factory>
 </hibernate-configuration>

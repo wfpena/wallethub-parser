@@ -8,8 +8,9 @@
 *.iml
 *.iws
  
-# Hibernate
+# DB
 db_accesslog.sql
+access2.log
 
 # Maven
 log/

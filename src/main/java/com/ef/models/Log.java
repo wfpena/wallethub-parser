@@ -13,6 +13,8 @@ import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.ef.dtos.LogDTO;
+
 @NamedNativeQuery(
 	    name = "getBetweenDate", 
 	    query = "CALL between_dates(:startDate, :endDate, :threshold)", 
