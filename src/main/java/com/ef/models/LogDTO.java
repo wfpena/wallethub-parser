@@ -18,14 +18,19 @@ public class LogDTO {
 	@Column(name="id")
 	@Id
 	private Long Id;
+	
 	@Column(name="ip")
 	private String ip;
+	
 	@Column(name="accessDate")
 	private Date accessDate;
+	
 	@Column(name="userAgent")
 	private String userAgent;
+	
 	@Column(name="status")
 	private String status;
+	
 	@Column(name="numOfRequests")
 	private Long numOfRequests;
 	

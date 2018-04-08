@@ -11,19 +11,32 @@ import java.util.TimeZone;
 
 import org.apache.commons.lang.time.DateUtils;
 
+/* @author Wilson Pena
+ * Utility class to parse command line arguments
+ */
 public class CliParser{	
 	private HashMap<String, Object> arguments;
 	public static SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd.HH:mm:ss");
 	
 
 	public CliParser(){
-		//dt.setTimeZone(TimeZone.getTimeZone("GMT"));
+		
 	}
 	
 	public CliParser(String[] args) throws ParsingCliException, Exception{	
 		arguments = parseCommandArgs(args);
 	}
 	
+	
+	/**
+     * This function parses the command line arguments
+     * throws custom Exception in case some arguments are missing
+     * or are invalid.
+     *
+     * @param application arguments
+     * @return HashMap with key equals name of the argument and
+     * 			value equals its value.
+     */
 	public HashMap<String, Object> parseCommandArgs(String[] args) throws Exception, ParsingCliException{
 		Date startDate = new Date();
 		Date endDate = new Date();

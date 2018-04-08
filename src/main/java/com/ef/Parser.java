@@ -21,58 +21,12 @@ import com.ef.models.LogDTO;
 import com.ef.utils.CliParser;
 import com.ef.utils.ParsingCliException;
 
+
 public class Parser 
 {
 	public static Integer i = 0;
-	public static void main( String[] args )
-	{
-		java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
-		SessionFactory sf = new Configuration().configure().buildSessionFactory();
-		Session session = sf.openSession();
-		CliParser cli;
-		
-		try {
-			cli = new CliParser(args);
-			HashMap<String, Object> argMap = cli.getArguments();
-			List<LogDTO> ips = findIps(session, (Date)argMap.get("startDate"), (Date)argMap.get("endDate"), 
-					Integer.parseInt(argMap.get("threshold").toString()), 
-					argMap.get("duration").toString());
-			
-			ips.forEach(logDto -> 
-			{
-				String comment = "User with ip " + logDto.getIp() + " made " + logDto.getNumOfRequests() + " "
-						+ "requests between " + cli.formatDate((Date)argMap.get("startDate"))
-						+ " and " + cli.formatDate((Date)argMap.get("endDate"));
-				
-				print(comment);
-				
-				BlockedIps bi = new BlockedIps();
-				bi.setComment(comment);
-				bi.setIp(logDto.getIp());
-				session.beginTransaction();
-				session.save(bi);
-				session.getTransaction().commit();
-			});
-		} catch (ParsingCliException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		if(session.isConnected()){
-			try{
-				session.close();
-			}catch(Exception e){
-				System.out.println("Error closing session: " + e.getMessage());
-			}
-		}
-		System.exit(0);
-	}
 	
-    //public static void main( String[] args )
-	public void func(String[] args)
+    public static void main( String[] args )
     {
 		java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
     	SessionFactory sf = new Configuration().configure().buildSessionFactory();
@@ -112,8 +66,6 @@ public class Parser
 	    				session.beginTransaction();
 	    				session.save(log);
 	    				session.getTransaction().commit();
-	    				//print(i.toString());
-	    				//i++;
 					}
 				});
 			
@@ -175,5 +127,52 @@ public class Parser
     		print(s);
     	}
     }
+    
+    public void funcForTesting( String[] args )
+	{
+		java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
+		SessionFactory sf = new Configuration().configure().buildSessionFactory();
+		Session session = sf.openSession();
+		CliParser cli;
+		
+		try {
+			cli = new CliParser(args);
+			HashMap<String, Object> argMap = cli.getArguments();
+			List<LogDTO> ips = findIps(session, (Date)argMap.get("startDate"), (Date)argMap.get("endDate"), 
+					Integer.parseInt(argMap.get("threshold").toString()), 
+					argMap.get("duration").toString());
+			
+			ips.forEach(logDto -> 
+			{
+				String comment = "User with ip " + logDto.getIp() + " made " + logDto.getNumOfRequests() + " "
+						+ "requests between " + cli.formatDate((Date)argMap.get("startDate"))
+						+ " and " + cli.formatDate((Date)argMap.get("endDate"));
+				
+				print(comment);
+				
+				BlockedIps bi = new BlockedIps();
+				bi.setComment(comment);
+				bi.setIp(logDto.getIp());
+				session.beginTransaction();
+				session.save(bi);
+				session.getTransaction().commit();
+			});
+		} catch (ParsingCliException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if(session.isConnected()){
+			try{
+				session.close();
+			}catch(Exception e){
+				System.out.println("Error closing session: " + e.getMessage());
+			}
+		}
+		System.exit(0);
+	}
 }
 
