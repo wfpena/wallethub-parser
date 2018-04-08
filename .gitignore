@@ -9,7 +9,7 @@
 *.iws
  
 # Hibernate
-
+db_accesslog.sql
 
 # Maven
 log/

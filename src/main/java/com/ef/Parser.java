@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 import java.util.stream.Stream;
 
 import org.hibernate.Query;
@@ -25,9 +26,11 @@ public class Parser
 	public static Integer i = 0;
 	public static void main( String[] args )
 	{
+		java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
 		SessionFactory sf = new Configuration().configure().buildSessionFactory();
 		Session session = sf.openSession();
 		CliParser cli;
+		
 		try {
 			cli = new CliParser(args);
 			HashMap<String, Object> argMap = cli.getArguments();
@@ -71,15 +74,20 @@ public class Parser
     //public static void main( String[] args )
 	public void func(String[] args)
     {
+		java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
     	SessionFactory sf = new Configuration().configure().buildSessionFactory();
 		Session session = sf.openSession();
 		
+		print("Starting server log parsing...");
+		
     	try {
+    		print("Truncating old table...");
     		session.createSQLQuery("truncate table log").executeUpdate();
     		CliParser cli = new CliParser(args);
     		HashMap<String, Object> argMap = cli.getArguments();
     		
     		String fileName = argMap.get("accesslog").toString();
+    		print("Inserting new values...");
     		Stream<String> stream = Files.lines(Paths.get(fileName));
 			stream
 				.filter(line -> line != null && !Objects.equals(line, ""))
@@ -104,8 +112,8 @@ public class Parser
 	    				session.beginTransaction();
 	    				session.save(log);
 	    				session.getTransaction().commit();
-	    				print(i.toString());
-	    				i++;
+	    				//print(i.toString());
+	    				//i++;
 					}
 				});
 			
